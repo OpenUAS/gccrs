@@ -43,6 +43,4 @@ extern unsigned int rust_field_alignment (tree);
 
 extern void rust_imported_unsafe (void);
 
-extern GTY(()) tree rust_non_zero_struct;
-
 #endif /* !defined(RUST_RUST_C_H) */

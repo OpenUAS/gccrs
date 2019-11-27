@@ -89,10 +89,10 @@ $(build_htmldir)/rust/index.html: $(RUST_TEXI_FILES)
 	$(TEXI2HTML) -I $(gcc_docdir) -I $(gcc_docdir)/include \
 		-I $(srcdir)/rust -o $(@D) $<
 
-.INTERMEDIATE: gccrust.pod
+# .INTERMEDIATE: gccrust.pod
 
-gccrust.pod: rust/gccrust.texi
-	-$(TEXI2POD) -D gccrust < $< > $@
+# gccrust.pod: rust/gccrust.texi
+# 	-$(TEXI2POD) -D gccrust < $< > $@
 
 # Build hooks.
 
@@ -110,9 +110,10 @@ rust.tags: force
 	cd $(srcdir)/rust; \
 	etags -o TAGS.sub *.c *.h rustfrontend/*.h rustfrontend/*.cc; \
 	etags --include TAGS.sub --include ../TAGS.sub
-rust.man: doc/gccrust.1
-rust.srcman: doc/gccrust.1
-	-cp -p $^ $(srcdir)/doc
+rust.man:
+# rust.man: doc/gccrust.1
+# rust.srcman: doc/gccrust.1
+# 	-cp -p $^ $(srcdir)/doc
 
 lang_checks += check-rust
 lang_checks_parallelized += check-rust
@@ -138,41 +139,41 @@ rust.install-common: installdirs
 
 rust.install-plugin:
 
-rust.install-info: $(DESTDIR)$(infodir)/gccrust.info
+# rust.install-info: $(DESTDIR)$(infodir)/gccrust.info
 
-rust.install-pdf: doc/gccrust.pdf
-	@$(NORMAL_INSTALL)
-	test -z "$(pdfdir)" || $(mkinstalldirs) "$(DESTDIR)$(pdfdir)/gcc"
-	@for p in doc/gccrust.pdf; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f=$(pdf__strip_dir) \
-	  echo " $(INSTALL_DATA) '$$d$$p' '$(DESTDIR)$(pdfdir)/gcc/$$f'"; \
-	  $(INSTALL_DATA) "$$d$$p" "$(DESTDIR)$(pdfdir)/gcc/$$f"; \
-	done
+# rust.install-pdf: doc/gccrust.pdf
+# 	@$(NORMAL_INSTALL)
+# 	test -z "$(pdfdir)" || $(mkinstalldirs) "$(DESTDIR)$(pdfdir)/gcc"
+# 	@for p in doc/gccrust.pdf; do \
+# 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+# 	  f=$(pdf__strip_dir) \
+# 	  echo " $(INSTALL_DATA) '$$d$$p' '$(DESTDIR)$(pdfdir)/gcc/$$f'"; \
+# 	  $(INSTALL_DATA) "$$d$$p" "$(DESTDIR)$(pdfdir)/gcc/$$f"; \
+# 	done
 
-rust.install-html: $(build_htmldir)/rust
-	@$(NORMAL_INSTALL)
-	test -z "$(htmldir)" || $(mkinstalldirs) "$(DESTDIR)$(htmldir)"
-	@for p in $(build_htmldir)/rust; do \
-	  if test -f "$$p" || test -d "$$p"; then d=""; else d="$(srcdir)/"; fi; \
-	  f=$(html__strip_dir) \
-	  if test -d "$$d$$p"; then \
-	    echo " $(mkinstalldirs) '$(DESTDIR)$(htmldir)/$$f'"; \
-	    $(mkinstalldirs) "$(DESTDIR)$(htmldir)/$$f" || exit 1; \
-	    echo " $(INSTALL_DATA) '$$d$$p'/* '$(DESTDIR)$(htmldir)/$$f'"; \
-	    $(INSTALL_DATA) "$$d$$p"/* "$(DESTDIR)$(htmldir)/$$f"; \
-	  else \
-	    echo " $(INSTALL_DATA) '$$d$$p' '$(DESTDIR)$(htmldir)/$$f'"; \
-	    $(INSTALL_DATA) "$$d$$p" "$(DESTDIR)$(htmldir)/$$f"; \
-	  fi; \
-	done
+# rust.install-html: $(build_htmldir)/rust
+# 	@$(NORMAL_INSTALL)
+# 	test -z "$(htmldir)" || $(mkinstalldirs) "$(DESTDIR)$(htmldir)"
+# 	@for p in $(build_htmldir)/rust; do \
+# 	  if test -f "$$p" || test -d "$$p"; then d=""; else d="$(srcdir)/"; fi; \
+# 	  f=$(html__strip_dir) \
+# 	  if test -d "$$d$$p"; then \
+# 	    echo " $(mkinstalldirs) '$(DESTDIR)$(htmldir)/$$f'"; \
+# 	    $(mkinstalldirs) "$(DESTDIR)$(htmldir)/$$f" || exit 1; \
+# 	    echo " $(INSTALL_DATA) '$$d$$p'/* '$(DESTDIR)$(htmldir)/$$f'"; \
+# 	    $(INSTALL_DATA) "$$d$$p"/* "$(DESTDIR)$(htmldir)/$$f"; \
+# 	  else \
+# 	    echo " $(INSTALL_DATA) '$$d$$p' '$(DESTDIR)$(htmldir)/$$f'"; \
+# 	    $(INSTALL_DATA) "$$d$$p" "$(DESTDIR)$(htmldir)/$$f"; \
+# 	  fi; \
+# 	done
 
-rust.install-man: $(DESTDIR)$(man1dir)/$(GCCRUST_INSTALL_NAME)$(man1ext)
+# rust.install-man: $(DESTDIR)$(man1dir)/$(GCCRUST_INSTALL_NAME)$(man1ext)
 
-$(DESTDIR)$(man1dir)/$(GCCRUST_INSTALL_NAME)$(man1ext): doc/gccrust.1 installdirs
-	-rm -f $@
-	-$(INSTALL_DATA) $< $@
-	-chmod a-x $@
+# $(DESTDIR)$(man1dir)/$(GCCRUST_INSTALL_NAME)$(man1ext): doc/gccrust.1 installdirs
+# 	-rm -f $@
+# 	-$(INSTALL_DATA) $< $@
+# 	-chmod a-x $@
 
 rust.uninstall:
 	rm -rf $(DESTDIR)$(bindir)/$(GCCRUST_INSTALL_NAME)$(exeext)
